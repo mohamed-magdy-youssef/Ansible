@@ -21,8 +21,8 @@ jobs:
           name: Copy the public IP of Instance to inventory file
           command: |
             aws ec2 describe-instances \
-              --query 'Reservations[*].Instances[*].PublicIpAddress'       
-              --filters "Name=tag:Project,Values=udacity"       
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --filters "Name=tag:Project,Values=udacity" \
               --output text >> inventory
 
   configure_infrastructure:
