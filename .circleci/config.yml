@@ -6,10 +6,15 @@ version: 2.1
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
   create_infrastructure:
+    working_directory: ~/project
     docker:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - run:
+          name: Install tar utility
+          command: |
+            yum install -y tar gzip
       - run:
           name: Create Cloudformation Stack
           command: |
@@ -25,17 +30,17 @@ jobs:
               --filters "Name=tag:Project,Values=udacity" \
               --output text >> inventory
       - persist_to_workspace:
-          root: .
+          root: ~/
           paths:
-            - inventory
+            - "project"
 
   configure_infrastructure:
+    working_directory: ~/project
     docker:
       - image: python:3.7-alpine3.11
     steps:
-      - checkout
       - attach_workspace:
-          at: .
+          at: ~/
       - add_ssh_keys:
           # You can get this ID in the section where you registered the SSH Key
           fingerprints: ["17:0f:77:19:a9:2b:99:b9:c8:5c:36:11:00:a8:b0:3c"]
