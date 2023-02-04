@@ -1,4 +1,18 @@
 # Exercise for setting up a web server in an EC
+- name: Scan for SSH host keys.
+  local_action:
+    module: shell
+    cmd: ssh-keyscan 192.168.1.1 2>/dev/null
+  changed_when: False
+  register: ssh_scan
+
+- name: Update known_hosts.
+  local_action:
+    module: known_hosts
+    key: "{{ item }}"
+    name: "{{ ansible_host }}"
+  with_items: "{{ ssh_scan.stdout_lines }}"
+
 - name: Exercise for setting up a web server in an EC
   # hosts: ubuntu
   # Use the public IP if the VM is already created
