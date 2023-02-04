@@ -52,7 +52,7 @@ jobs:
       - run:
           name: configure cfg
           command: |
-            echo 'host_key_check = False' > /etc/ansible/ansible.cfg
+            echo 'host_key_check = False' > ~/.ansible.cfg
       - run:
           name: Run Playbook and Configure server
           command: |
